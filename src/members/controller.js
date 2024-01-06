@@ -26,7 +26,7 @@ const getMembersById = (req, res) => {
 };
 
 const addMembers = (req,res) => {
-    const { timestamp, name, shapecolor} = req.body;
+    const { timestamp, name, shape, color} = req.body;
     //check if name exist
     pool.query(queries.checkNameExists, [name], (error, results) => {
         if (results.rows.length) {
@@ -36,7 +36,7 @@ const addMembers = (req,res) => {
         //add member to db
         pool.query(
             queries.addMembers, 
-            [timestamp, name, shapecolor], 
+            [timestamp, name, shape, color], 
             (error, results) => {
                 if (error) throw error;
                 res.status(201).send("Member Created Successfully");
@@ -51,7 +51,7 @@ const removeMembers = (req, res) => {
     pool.query(queries.getMembersById, [id], (error, results) => {
         const noMembersFound = !results.rows.length;
         if (noMembersFound){
-            res.send("Student does not exist in the database");
+            res.send("Member does not exist in the database");
         }
 
         pool.query(queries.removeMembers, [id], (error, results) =>{
@@ -67,7 +67,7 @@ const removeMembers = (req, res) => {
 
 const updateMembers = (req, res) => {
     const id = parseInt(req.params.id);
-    const {shapecolor, name } = req.body;
+    const {shape, color, name } = req.body;
 
     pool.query(queries.getMembersById, [id], (error, results) => {
         const noMembersFound = !results.rows.length;
@@ -75,7 +75,7 @@ const updateMembers = (req, res) => {
             res.send("Member does not exist in the database");
         }
 
-        pool.query(queries.updateMembers, [shapecolor, name, id], (error, results) => {
+        pool.query(queries.updateMembers, [shape, color, name, id], (error, results) => {
             if (error) throw error;
             res.status(200).send("Member updated successfully");
         });

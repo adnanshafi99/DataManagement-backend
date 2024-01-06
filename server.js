@@ -1,11 +1,12 @@
 const express = require("express");
+const cors = require('cors');
 const memberRoutes = require("./src/members/routes");
 
 const app = express();
 const port = 3000;
 
 app.use(express.json());
-
+app.use(cors())
 app.get("/", (req, res) => {
     res.send("Hello World!");
 });
