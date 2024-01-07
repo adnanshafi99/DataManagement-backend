@@ -1,3 +1,14 @@
+const { Pool } = require("pg");
+require("dotenv").config();
+
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+  ssl: {
+    rejectUnauthorized: false,
+  },
+});
+
+
 const getMembers = "SELECT * FROM member";
 const getMembersById = "SELECT * FROM member WHERE id = $1";
 const checkNameExists = "SELECT s FROM member s WHERE s.name = $1";
