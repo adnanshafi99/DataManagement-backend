@@ -28,6 +28,10 @@ const getMembersById = (req, res) => {
 const addMembers = (req, res) => {
     const { timestamp, name, shape, color } = req.body;
 
+    // Convert shape and color to lowercase
+    const lowercaseShape = shape.toLowerCase();
+    const lowercaseColor = color.toLowerCase();
+
     //check if name exist
     pool.query(queries.checkNameExists, [name], (error, results) => {
         if (results.rows.length) {
@@ -37,7 +41,7 @@ const addMembers = (req, res) => {
         //Add member to db
         pool.query(
             queries.addMembers,
-            [timestamp, name, shape, color],
+            [timestamp, name, lowercaseShape, lowercaseColor],
             (error, results) => {
                 if (error) {
                     console.error('Error in addMembers query:', error);
